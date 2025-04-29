@@ -44,8 +44,8 @@ root.render(
               </>
             }
           />
-          <Route exact path="verify" Component={()=><CertificateLookup />} />
-          <Route exact path="compiler" Component={()=><Compiler/>} />
+          <Route exact path="verify" element={<CertificateLookup />} />
+          <Route exact path="compiler" element={<Compiler/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
