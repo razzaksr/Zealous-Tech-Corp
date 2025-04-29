@@ -1,0 +1,15 @@
+/* Example in App.css or index.css */
+@font-face {
+  font-family: "Usuzi";
+  src: url("../font/usuzi.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+
+.monaco-editor {
+  font-family:'Times New Roman', Times, serif !important;
+  font-size: 20px !important;
+
+}
