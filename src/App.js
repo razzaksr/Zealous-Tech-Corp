@@ -35,7 +35,6 @@ function App() {
         />
         <Route path="/verify" element={<CertificateLookup />} />
         <Route path="/compiler" element={<Compiler />} />
-        <Route path="/demo" element={<Demo />} />
         <Route path="*" element={<div>404 - Page Not Found</div>} />
       </Routes>
     </BrowserRouter>
