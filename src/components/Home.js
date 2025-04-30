@@ -8,7 +8,7 @@ const Home = () => {
     <section
       className="home-section"
       style={{
-        marginTop:"50px",
+        marginTop:"25px",
         background: "linear-gradient(135deg, #0c83c8 0%, #fc7a46 100%)",
         color: "#fff",
         paddingBottom: "20px",

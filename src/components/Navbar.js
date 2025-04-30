@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CallIcon from '@mui/icons-material/Call';
+import CallIcon from "@mui/icons-material/Call";
 import {
   AppBar,
   Toolbar,
@@ -30,11 +30,13 @@ function Navigation() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isExtraSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const location = useLocation();
   const navigate = useNavigate();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [phoneMenuAnchorEl, setPhoneMenuAnchorEl] = useState(null);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -67,10 +69,17 @@ function Navigation() {
     setDrawerOpen(false);
   };
 
+  const handlePhoneMenuOpen = (event) => {
+    setPhoneMenuAnchorEl(event.currentTarget);
+  };
+
+  const handlePhoneMenuClose = () => {
+    setPhoneMenuAnchorEl(null);
+  };
+
   const navLinks = [
     { to: "home-section", label: "Home" },
     { to: "about-section", label: "About" },
-    // { to: "clients-section", label: "Clients" },
     { to: "contacts-section", label: "Contact" },
     { to: "/verify", label: "Certificate Validation", isRoute: true },
     { to: "/compiler", label: "Compiler", isRoute: true },
@@ -91,8 +100,15 @@ function Navigation() {
   };
 
   const renderNavLinks = () => (
-    <Box sx={{ display: "flex", alignItems: "center", gap: isSmallScreen ? 1 : 2 }}>
-      {navLinks.map((link, index) => (
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: { xs: 1, sm: 1.5, md: 2 },
+        flexWrap: "wrap",
+      }}
+    >
+      {navLinks.map((link, index) =>
         link.isRoute ? (
           <a
             key={index}
@@ -102,11 +118,10 @@ function Navigation() {
               cursor: "pointer",
               color: "#0c83c8",
               textDecoration: "none",
-              fontSize: isSmallScreen ? "0.9rem" : "1rem",
+              fontSize: isSmallScreen ? "0.85rem" : isMobile ? "0.9rem" : "1rem",
+              padding: "0.5rem",
             }}
-            onClick={() => {
-              handleNavClick(link.to, true);
-            }}
+            onClick={() => handleNavClick(link.to, true)}
           >
             {link.label}
           </a>
@@ -119,7 +134,8 @@ function Navigation() {
             style={{
               cursor: "pointer",
               color: "#0c83c8",
-              fontSize: isSmallScreen ? "0.9rem" : "1rem",
+              fontSize: isSmallScreen ? "0.85rem" : isMobile ? "0.9rem" : "1rem",
+              padding: "0.5rem",
             }}
             spy={true}
             smooth={true}
@@ -128,7 +144,7 @@ function Navigation() {
             {link.label}
           </ScrollLink>
         )
-      ))}
+      )}
       <Typography
         onClick={handleSubMenuOpen}
         style={{
@@ -136,10 +152,11 @@ function Navigation() {
           color: "#0c83c8",
           display: "inline-flex",
           alignItems: "center",
-          fontSize: isSmallScreen ? "0.9rem" : "1rem",
+          fontSize: isSmallScreen ? "0.85rem" : isMobile ? "0.9rem" : "1rem",
+          padding: "0.5rem",
         }}
       >
-        More <ArrowDropDownIcon />
+        More <ArrowDropDownIcon fontSize={isSmallScreen ? "small" : "medium"} />
       </Typography>
       <Menu
         anchorEl={anchorEl}
@@ -163,7 +180,7 @@ function Navigation() {
               handleSubMenuClose();
             }}
           >
-            <MenuItem sx={{ backgroundColor: "#ffffff", color: "#0c83c8" }}>
+            <MenuItem sx={{ backgroundColor: "#ffffff", color: "#0c83c8", fontSize: isSmallScreen ? "0.85rem" : "1rem" }}>
               {link.label}
             </MenuItem>
           </ScrollLink>
@@ -173,20 +190,18 @@ function Navigation() {
   );
 
   const renderDrawerLinks = () => (
-    <>
-      {navLinks.map((link, index) => (
+    <List>
+      {navLinks.map((link, index) =>
         link.isRoute ? (
           <a
             key={index}
             href={link.to}
             className="nav-link"
             style={{ cursor: "pointer", color: "#ffffff", textDecoration: "none" }}
-            onClick={() => {
-              handleNavClick(link.to, true);
-            }}
+            onClick={() => handleNavClick(link.to, true)}
           >
             <ListItem button sx={{ color: "#ffffff", cursor: "pointer" }}>
-              <ListItemText primary={link.label} />
+              <ListItemText primary={link.label} primaryTypographyProps={{ fontSize: isSmallScreen ? "0.9rem" : "1rem" }} />
             </ListItem>
           </a>
         ) : (
@@ -201,14 +216,14 @@ function Navigation() {
             onClick={() => handleNavClick(link.to)}
           >
             <ListItem button sx={{ color: "#ffffff", cursor: "pointer" }}>
-              <ListItemText primary={link.label} />
+              <ListItemText primary={link.label} primaryTypographyProps={{ fontSize: isSmallScreen ? "0.9rem" : "1rem" }} />
             </ListItem>
           </ScrollLink>
         )
-      ))}
+      )}
       <ListItem button sx={{ color: "#ffffff", cursor: "pointer" }} onClick={handleSubMenuOpen}>
-        <ListItemText primary="More" />
-        <ArrowDropDownIcon />
+        <ListItemText primary="More" primaryTypographyProps={{ fontSize: isSmallScreen ? "0.9rem" : "1rem" }} />
+        <ArrowDropDownIcon fontSize={isSmallScreen ? "small" : "medium"} />
       </ListItem>
       <Menu
         anchorEl={anchorEl}
@@ -232,13 +247,13 @@ function Navigation() {
               handleSubMenuClose();
             }}
           >
-            <MenuItem sx={{ backgroundColor: "#0c83c8", color: "#ffffff" }}>
+            <MenuItem sx={{ backgroundColor: "#0c83c8", color: "#ffffff", fontSize: isSmallScreen ? "0.85rem" : "1rem" }}>
               {link.label}
             </MenuItem>
           </ScrollLink>
         ))}
       </Menu>
-    </>
+    </List>
   );
 
   return (
@@ -249,23 +264,98 @@ function Navigation() {
         className="custom-navbar"
         sx={{ backgroundColor: "#ffffff", zIndex: theme.zIndex.drawer + 1 }}
       >
-        <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
-          <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2 } }}>
-              <img
-                src={zealous}
-                onClick={scrollToTop}
-                style={{
-                  cursor: "pointer",
-                  maxHeight: isSmallScreen ? 60 : 90,
+        <Container maxWidth="xl" sx={{ px: { xs: 1, sm: 2, md: 3, lg: 4 } }}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "center", sm: "center" },
+              justifyContent: "space-between",
+              py: { xs: 2, sm: 1 },
+              minHeight: { xs: 110, sm: 80, md: 90 },
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                alignItems: { xs: "center", sm: "center" },
+                gap: { xs: 1, sm: 2 },
+                width: { xs: "100%", sm: "auto" },
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column-reverse", sm: "row" },
+                  alignItems: { xs: "center", sm: "center" },
+                  justifyContent: { xs: "center", sm: "flex-start" },
+                  gap: { xs: 1, sm: 2 },
+                  width: { xs: "100%", sm: "auto" },
+                  ml: { md: 3 }, // Shift right on large screens
                 }}
-                alt="Zealous Logo"
-              />
-              <Box sx={{ display: "flex", alignItems: "center", color: "#fc7a46" }}>
-                <CallIcon fontSize={isSmallScreen ? "small" : "medium"} />
-                <Typography sx={{ ml: 1, fontSize: isSmallScreen ? "0.9rem" : "1rem" }}>
-                  +91 95973 34782
-                </Typography>
+              >
+                <img
+                  src={zealous}
+                  onClick={scrollToTop}
+                  style={{
+                    cursor: "pointer",
+                    maxHeight: isExtraSmallScreen ? 40 : isSmallScreen ? 50 : 60,
+                    maxWidth: "100%",
+                  }}
+                  alt="Zealous Logo"
+                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#fc7a46",
+                    mb: { xs: 1, sm: 0 },
+                  }}
+                >
+                  <CallIcon fontSize={isSmallScreen ? "small" : "medium"} />
+                  <Typography
+                    onClick={handlePhoneMenuOpen}
+                    sx={{
+                      ml: 1,
+                      fontSize: isExtraSmallScreen ? "0.8rem" : isSmallScreen ? "0.9rem" : "1rem",
+                      color: "#fc7a46",
+                      textDecoration: "none",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                      "&:hover": { textDecoration: "underline" },
+                    }}
+                  >
+                    +91 95973 34782
+                  </Typography>
+                  <Menu
+                    anchorEl={phoneMenuAnchorEl}
+                    open={Boolean(phoneMenuAnchorEl)}
+                    onClose={handlePhoneMenuClose}
+                    MenuListProps={{
+                      style: { backgroundColor: "#ffffff", color: "#0c83c8" },
+                    }}
+                  >
+                    <MenuItem
+                      component="a"
+                      href="tel:+919597334782"
+                      sx={{ backgroundColor: "#ffffff", color: "#0c83c8", fontSize: isSmallScreen ? "0.85rem" : "1rem" }}
+                      onClick={handlePhoneMenuClose}
+                    >
+                      Call
+                    </MenuItem>
+                    <MenuItem
+                      component="a"
+                      href="https://wa.me/919597334782"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      sx={{ backgroundColor: "#ffffff", color: "#0c83c8", fontSize: isSmallScreen ? "0.85rem" : "1rem" }}
+                      onClick={handlePhoneMenuClose}
+                    >
+                      WhatsApp
+                    </MenuItem>
+                  </Menu>
+                </Box>
               </Box>
             </Box>
             {isMobile ? (
@@ -274,7 +364,13 @@ function Navigation() {
                 color="inherit"
                 aria-label="menu"
                 onClick={handleDrawerToggle}
-                sx={{ color: "#0c83c8" }}
+                sx={{
+                  color: "#0c83c8",
+                  alignSelf: { xs: "flex-end", sm: "center" },
+                  position: { xs: "absolute", sm: "static" },
+                  top: { xs: 10, sm: "auto" },
+                  right: { xs: 10, sm: "auto" },
+                }}
               >
                 {drawerOpen ? <CloseIcon /> : <MenuIcon />}
               </IconButton>
@@ -289,21 +385,22 @@ function Navigation() {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         sx={{
-          "& .MuiDrawer-paper": { backgroundColor: "#0c83c8", width: isSmallScreen ? 200 : 250 },
+          "& .MuiDrawer-paper": {
+            backgroundColor: "#0c83c8",
+            width: isExtraSmallScreen ? 180 : isSmallScreen ? 200 : 250,
+          },
         }}
       >
-        <div
-          style={{
-            width: isSmallScreen ? 200 : 250,
-            paddingTop: isSmallScreen ? "120px" : "154px",
+        <Box
+          sx={{
+            width: isExtraSmallScreen ? 180 : isSmallScreen ? 200 : 250,
+            pt: isExtraSmallScreen ? "120px" : isSmallScreen ? "130px" : "150px",
           }}
         >
-          <List>
-            {renderDrawerLinks()}
-          </List>
-        </div>
+          {renderDrawerLinks()}
+        </Box>
       </Drawer>
-      <Toolbar />
+      <Toolbar sx={{ minHeight: { xs: 110, sm: 80, md: 90 } }} />
     </>
   );
 }
