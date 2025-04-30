@@ -3,6 +3,7 @@ import { Container, Grid, Button, Typography, Box } from "@mui/material";
 import { Link } from "react-scroll";
 
 const Home = () => {
+  localStorage.clear()
   return (
     <section
       className="home-section"

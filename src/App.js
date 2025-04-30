@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/Navbar";
 import ImageCarousel from "./components/ImageCarousel";
@@ -13,7 +14,49 @@ import CertificateLookup from "./components/CertificateVerification";
 import Compiler from "./components/Compiler";
 
 function App() {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // e.preventDefault();
+      // if (e.key === "F12" || e.keyCode === 123) {
+      //   e.preventDefault();
+      // }
+      // if (e.ctrlKey && e.shiftKey && e.key === "I") {
+      //   e.preventDefault();
+      // }
+        const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+
+        // Block F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+        }
+
+        // Block Ctrl+Shift+I or Cmd+Opt+I
+        if (
+          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+          (isMac && e.metaKey && e.altKey && e.key.toLowerCase() === 'i')
+        ) {
+          e.preventDefault();
+        }
+
+        // Block Ctrl+Shift+J
+        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') {
+          e.preventDefault();
+        }
+
+        // Block Ctrl+U
+        if (e.ctrlKey && e.key.toLowerCase() === 'u') {
+          e.preventDefault();
+        }
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
+
     <BrowserRouter>
       <Routes>
         <Route
