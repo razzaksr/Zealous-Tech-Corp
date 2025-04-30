@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom"; 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./styles/index.css";
 import NavBar from "./components/Navbar";
@@ -9,11 +9,10 @@ import About from "./components/About";
 import ServicesCard from "./components/ServicesCard";
 import TrainingCards from "./components/TrainingCards";
 import CampusCard from "./components/CampusCard";
-// import ClientsCard from "./components/ClientsCard";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
-import CertificateLookup from "./components/CertificateVerification"; 
+import CertificateLookup from "./components/CertificateVerification";
 import Compiler from "./components/Compiler";
 import Demo from "./components/demo";
 
@@ -45,9 +44,10 @@ root.render(
               </>
             }
           />
-          <Route exact path="verify" element={<CertificateLookup />} />
-          <Route exact path="compiler" element={<Compiler/>} />
-          <Route exact path="demo" element={<Demo />} />
+          <Route path="/verify" element={<CertificateLookup />} />
+          <Route path="/compiler" element={<Compiler />} />
+          <Route path="/demo" element={<Demo />} />
+
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
