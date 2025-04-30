@@ -49,6 +49,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft"
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight"
+import JavascriptIcon from "@mui/icons-material/Code" // Using Code icon for JavaScript
 
 // Language mapping for Piston API
 const languageApiMap = {
@@ -56,6 +57,7 @@ const languageApiMap = {
   java: { id: "java", version: "15.0.2" },
   cpp: { id: "cpp", version: "10.2.0" },
   c: { id: "c", version: "10.2.0" },
+  javascript: { id: "javascript", version: "18.15.0" },
 }
 
 // Material UI Switch for theme toggle with improved performance
@@ -371,9 +373,9 @@ const Compiler = () => {
   }, [])
 
   // Handle horizontal divider drag (editor vs test cases)
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (ul) => {
     if (!isMobile) {
-      e.preventDefault()
+      ul.preventDefault()
       isDraggingRef.current = true
       document.body.classList.add("resize-active")
       document.addEventListener("mousemove", handleMouseMove)
@@ -381,11 +383,11 @@ const Compiler = () => {
     }
   }
 
-  const handleMouseMove = useCallback((e) => {
+  const handleMouseMove = useCallback((ul) => {
     if (isDraggingRef.current && dividerRef.current) {
       const container = dividerRef.current.parentElement
       const containerRect = container.getBoundingClientRect()
-      const newWidth = ((e.clientX - containerRect.left) / containerRect.width) * 100
+      const newWidth = ((ul.clientX - containerRect.left) / containerRect.width) * 100
       setEditorWidth(Math.max(30, Math.min(80, newWidth)))
     }
   }, [])
@@ -403,19 +405,19 @@ const Compiler = () => {
   }
 
   // Handle vertical divider drag (output height)
-  const handleOutputMouseDown = (e) => {
-    e.preventDefault()
+  const handleOutputMouseDown = (ul) => {
+    ul.preventDefault()
     isDraggingRef.current = true
     document.body.classList.add("resize-active")
     document.addEventListener("mousemove", handleOutputMouseMove)
     document.addEventListener("mouseup", handleOutputMouseUp)
   }
 
-  const handleOutputMouseMove = useCallback((e) => {
+  const handleOutputMouseMove = useCallback((ul) => {
     if (isDraggingRef.current && outputDividerRef.current) {
       const container = outputDividerRef.current.parentElement
       const containerRect = container.getBoundingClientRect()
-      const newHeight = ((containerRect.bottom - e.clientY) / containerRect.height) * 100
+      const newHeight = ((containerRect.bottom - ul.clientY) / containerRect.height) * 100
       setOutputHeight(Math.max(20, Math.min(50, newHeight)))
     }
   }, [])
@@ -477,6 +479,7 @@ const Compiler = () => {
     java: `import java.util.*;\npublic class Progman {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Hello World");\n\t}\n}`,
     c: `#include <stdio.h>\nint main() {\n\tprintf("Hello World");\n\treturn 0;\n}`,
     cpp: `#include <iostream>\nusing namespace std;\nint main() {\n\tcout << "Hello World";\n\treturn 0;\n}`,
+    javascript: `console.log("Hello World");`,
   }
 
   // Language icon mapping
@@ -485,6 +488,7 @@ const Compiler = () => {
     java: <JavaIcon fontSize="small" />,
     cpp: <CppIcon fontSize="small" />,
     c: <CIcon fontSize="small" />,
+    javascript: <JavascriptIcon fontSize="small" />,
   }
 
   // Language display names
@@ -493,6 +497,7 @@ const Compiler = () => {
     java: "Java",
     cpp: "C++",
     c: "C",
+    javascript: "JavaScript",
   }
 
   // Handle editor input changes
@@ -593,7 +598,7 @@ const Compiler = () => {
     const payload = {
       language: languageApiMap[language].id,
       version: languageApiMap[language].version,
-      files: [{ name: `main.${language}`, content: code }],
+      files: [{ name: `main.${language === "javascript" ? "js" : language}`, content: code }],
       stdin: inputData,
       compile_timeout: 10000,
       run_timeout: 3000,
@@ -622,8 +627,8 @@ const Compiler = () => {
   }
 
   // Handle code run
-  const handleRun = async (e) => {
-    e.preventDefault()
+  const handleRun = async (ul) => {
+    ul.preventDefault()
     setShowOutput(true)
     setOutputMinimized(false)
     setLoading(true)
@@ -874,6 +879,9 @@ const Compiler = () => {
                 <MenuItem value="c">
                   <CIcon sx={{ mr: 1, fontSize: "small" }} /> C
                 </MenuItem>
+                <MenuItem value="javascript">
+                  <JavascriptIcon sx={{ mr: 1, fontSize: "small" }} /> JavaScript
+                </MenuItem>
               </Select>
             </FormControl>
             <FormGroup>
@@ -909,7 +917,7 @@ const Compiler = () => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                p: 1,
+                p : 1,
                 borderBottom: 1,
                 borderColor: "divider",
                 bgcolor: "background.paper",
@@ -957,7 +965,7 @@ const Compiler = () => {
               <Editor
                 className="monaco-editor"
                 height="100%"
-                language={language}
+                language={language === "javascript" ? "javascript" : language}
                 value={input}
                 onChange={handleEditorChange}
                 onMount={handleEditorDidMount}
@@ -1119,7 +1127,7 @@ const Compiler = () => {
                   fullWidth
                   label="Input (Optional)"
                   value={newTestCaseInput}
-                  onChange={(e) => setNewTestCaseInput(e.target.value)}
+                  onChange={(ul) => setNewTestCaseInput(ul.target.value)}
                   multiline
                   rows={2}
                   size="small"
@@ -1135,7 +1143,7 @@ const Compiler = () => {
                   fullWidth
                   label="Expected Output"
                   value={newTestCaseOutput}
-                  onChange={(e) => setNewTestCaseOutput(e.target.value)}
+                  onChange={(ul) => setNewTestCaseOutput(ul.target.value)}
                   multiline
                   rows={2}
                   size="small"
