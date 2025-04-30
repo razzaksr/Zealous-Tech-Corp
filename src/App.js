@@ -11,7 +11,6 @@ import Footer from "./components/Footer";
 import Home from "./components/Home";
 import CertificateLookup from "./components/CertificateVerification";
 import Compiler from "./components/Compiler";
-import Demo from "./components/demo";
 
 function App() {
   return (
