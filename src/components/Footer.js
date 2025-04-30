@@ -124,7 +124,7 @@ const Footer = () => {
                 <LinkedIn />
               </IconButton>
               <IconButton
-                href="https://www.instagram.com/zealous_tech/"
+                href="https://www.instagram.com/zealousacademyofcareertraining?igsh=MTE1ZjVmdHFrNGp3eA=="
                 target="_blank"
                 rel="noopener"
                 style={{ color: "white", marginRight: "0.5rem" }}
@@ -144,11 +144,6 @@ const Footer = () => {
           <Grid item xs={12} md={6}>
             <Typography variant="body2" align="left" style={{ color: "white" }}>
               &copy; 2024 Zealous Tech Corp. All rights reserved.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Typography variant="body2" align="right">
-              Developed by Noorul
             </Typography>
           </Grid>
         </Grid>
