@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import Home from "./components/Home";
 import CertificateLookup from "./components/CertificateVerification"; 
 import Compiler from "./components/Compiler";
+import Demo from "./components/demo";
 
 const theme = createTheme({
   typography: {
@@ -46,6 +47,7 @@ root.render(
           />
           <Route exact path="verify" element={<CertificateLookup />} />
           <Route exact path="compiler" element={<Compiler/>} />
+          <Route exact path="demo" element={<Demo />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
