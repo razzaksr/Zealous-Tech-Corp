@@ -152,16 +152,15 @@ const theme = createTheme({
         },
         message: {
           fontFamily: "'Usuzi', 'Roboto', 'Helvetica', 'Arial', sans-serif",
-          color: "white", // Ensure all alert messages use white text
+          color: "white",
         },
         icon: {
-          color: "white", // Ensure all alert icons use white color
+          color: "white",
         },
-        // Specific override for filled success variant
         filledSuccess: {
-          color: "white", // Ensure text is white for success filled variant
+          color: "white",
           "& .MuiAlert-icon": {
-            color: "white", // Ensure icon is white for success filled variant
+            color: "white",
           },
         },
       },
@@ -209,9 +208,10 @@ const CertificateLookup = () => {
     setLoading(true);
 
     try {
-      if (!/^\d{10}$/.test(id)) {
+      // Validate certificate ID format (e.g., must contain at least one slash and end with numbers)
+      if (!id || !/^[A-Z]+\/[A-Z]+(\/[A-Z]+)?\/\d+$/.test(id)) {
         console.log("CertificateLookup: Invalid certificateId format:", id);
-        const errorMsg = "Certificate ID must be a 10-digit number.";
+        const errorMsg = "Certificate ID must be in the format PREFIX/SUFFIX/NUMBER (e.g., CET/WP/12345).";
         setError(errorMsg);
         setSnackbar({
           open: true,
@@ -394,7 +394,7 @@ const CertificateLookup = () => {
                     mb: 1,
                   }}
                 >
-                  Verify the authenticity of certificates by entering the 10-digit Certificate ID
+                  Verify the authenticity of certificates by entering the Certificate ID
                 </Typography>
               </Box>
             </Box>
@@ -452,7 +452,7 @@ const CertificateLookup = () => {
                     console.log("CertificateLookup: Input changed to:", e.target.value);
                     setCertificateId(e.target.value.trim());
                   }}
-                  placeholder="Enter 10-digit Certificate ID"
+                  placeholder="Enter Certificate ID (e.g., CET/WP/12345)"
                   required
                   margin="normal"
                   disabled={loading}
@@ -481,7 +481,9 @@ const CertificateLookup = () => {
                     }}
                   >
                     <Info fontSize="small" color="primary" sx={{ mr: 1 }} />
-                    <Typography variant="caption">Example: 1234567890 (10 digits)</Typography>
+                    <Typography variant="caption">
+                      Examples: CET/WP/12345
+                    </Typography>
                   </Box>
                 )}
 
@@ -521,7 +523,7 @@ const CertificateLookup = () => {
                       "&:hover": {
                         transform: "translateY(-2px)",
                         boxShadow: "0 6px 15px rgba(252, 122, 70, 0.2)",
-                      },
+                       },
                     }}
                     startIcon={<Clear />}
                   >
@@ -623,7 +625,7 @@ const CertificateLookup = () => {
                                 fontWeight: "400",
                                 mb: 3,
                                 fontFamily: "'Usuzi', 'Roboto', 'Helvetica', 'Arial', sans-serif !important",
-                              color: "primary.main",
+                                color: "primary.main",
                               }}
                             >
                               Certificate Details
