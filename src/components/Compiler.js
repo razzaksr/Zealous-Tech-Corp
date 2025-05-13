@@ -50,6 +50,8 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft"
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight"
 import JavascriptIcon from "@mui/icons-material/Code" // Using Code icon for JavaScript
+import Logo from "../Images/Zealous.png"
+
 
 // Language mapping for Piston API
 const languageApiMap = {
@@ -84,7 +86,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
   },
   "& .MuiSwitch-thumb": {
-    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#001e3c",
+    backgroundColor: theme.palette.mode === "dark" ? "#003892" : "#0383c7",
     width: 32,
     height: 32,
     "&::before": {
@@ -120,7 +122,7 @@ const createAppTheme = (mode) => {
         paper: mode === "dark" ? "#1f2937" : "#ffffff",
       },
       text: {
-        primary: mode === "dark" ? "#f3f4f6" : "#1f2937",
+        primary: mode === "dark" ? "#f3f4f6" : "#0383c7",
         secondary: mode === "dark" ? "#9ca3af" : "#6b7280",
       },
       success: { main: "#0c83c8" },
@@ -305,6 +307,8 @@ const Compiler = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [testCaseToDelete, setTestCaseToDelete] = useState(null)
   const [resetDialogOpen, setResetDialogOpen] = useState(false)
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const isExtraSmallScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const isDraggingRef = useRef(false)
   const dividerRef = useRef(null)
@@ -828,20 +832,33 @@ const Compiler = () => {
         >
           <Box sx={{ display: "flex", alignItems: "center", minWidth: 0 }}>
             <CodeIcon sx={{ color: "#0c83c8", mr: 1, fontSize: { xs: 20, sm: 28 } }} />
-            <Typography
-              variant="h5"
-              color="text.primary"
-              sx={{
-                fontWeight: 700,
-                fontSize: { xs: "1rem", sm: "1.5rem" },
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                fontFamily: "'Usuzi', 'Helvetica', 'Arial', sans-serif !important",
-              }}
-            >
-              Zealous Compiler
-            </Typography>
+            <img
+                  src={Logo}
+                  onClick={() => {
+                    window.location.href = "/" }}
+                  style={{
+                    cursor: "pointer",
+                    maxHeight: isExtraSmallScreen ? 40 : isSmallScreen ? 40 : 60,
+                    maxWidth: "40%",
+                  }}
+                  alt="Zealous Logo"
+                />
+<Typography
+  variant="h5"
+  color="text.primary"
+  sx={{
+    fontWeight: 500,
+    fontSize: { xs: "1.2rem", sm: "1.8rem" }, 
+    overflow: "visible", 
+    fontFamily: "'Usuzi', 'Helvetica', 'Arial', sans-serif !important",
+    marginLeft: 1,
+    marginBottom: 0.55,
+
+  }}
+>
+  Compiler
+</Typography>
+
           </Box>
           <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1 }, flexShrink: 0 }}>
             <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 140 }, mr: { xs: 0.5, sm: 1 } }}>
